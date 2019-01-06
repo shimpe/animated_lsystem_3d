@@ -20,7 +20,9 @@ Entity {
     property color diffuseColor : "white"
     property color specularColor : "white"
     property color ambientColor : "gold"
+    property real jointExpansion : 1.0
 
+    /*
     Entity {
         id: corner1
         PhongMaterial {
@@ -32,7 +34,7 @@ Entity {
 
         SphereMesh {
             id: sphereMesh
-            radius: rad
+            radius: { rad*jointExpansion }
             rings: 20
             slices: 20
 
@@ -49,6 +51,7 @@ Entity {
 
         components: [ sphereMesh, sphereMaterial, sphereTransform ]
     }
+    */
 
     Entity {
         id: corner2
@@ -61,7 +64,7 @@ Entity {
 
         SphereMesh {
             id: sphereMesh2
-            radius: rad
+            radius: { rad*jointExpansion }
             rings: 20
             slices: 20
 
