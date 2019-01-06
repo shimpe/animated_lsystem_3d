@@ -1,0 +1,6 @@
+[submodule "qt-supermacros"]
+	path = qt-supermacros
+	url = http://gitlab.unique-conception.org/qt-qml-tricks/qt-supermacros.git
+[submodule "qt-qml-models"]
+	path = qt-qml-models
+	url = http://gitlab.unique-conception.org/qt-qml-tricks/qt-qml-models.git
