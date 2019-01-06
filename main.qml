@@ -3,10 +3,14 @@ import Qt3D.Core 2.0
 import Qt3D.Render 2.0
 import Qt3D.Input 2.0
 import Qt3D.Extras 2.0
+import Qt3D.Logic 2.0
 import QtQml 2.12
 
 Entity {
     id: sceneRoot
+
+    property real orbitSpeed : 5.0
+    property real lookSpeed: 5.0
 
     Camera {
         id: camera
@@ -15,7 +19,7 @@ Entity {
         aspectRatio: 16/9
         nearPlane : 0.1
         farPlane : 1000.0
-        position: Qt.vector3d( 0.0, 5.0, -10.0 )
+        position: Qt.vector3d( 0.0, 5.0, -20.0 )
         upVector: Qt.vector3d( 0.0, 1.0, 0.0 )
         viewCenter: Qt.vector3d( 0.0, 0.0, 0.0 )
     }
@@ -23,6 +27,13 @@ Entity {
     OrbitCameraController {
         id:fpc
         camera: camera
+    }
+
+    FrameAction {
+        onTriggered: {
+            camera.panAboutViewCenter(sceneRoot.lookSpeed * dt)
+            camera.tiltAboutViewCenter(sceneRoot.orbitSpeed * dt)
+        }
     }
 
     components: [
@@ -50,9 +61,14 @@ Entity {
             tx : LSystem.tx(index)
             ty : LSystem.ty(index)
             tz : LSystem.tz(index)
+            jointExpansion : 1.5
             diffuseColor : "white"
             specularColor : "white"
             ambientColor : "red"
         }
+    }
+
+    Component.onCompleted: {
+        camera.viewAll();
     }
 }
