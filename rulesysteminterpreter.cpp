@@ -54,6 +54,8 @@ void RuleSystemInterpreter::updateBasis(const QMatrix3x3 &matrix)
 
 void RuleSystemInterpreter::recalculate()
 {
+    m_3dPipes.clear();
+
     OperationRecognizer r;
     for (auto &c : m_calculatedString) {
         Operations o = r.recognize(c);
