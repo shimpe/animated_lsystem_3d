@@ -1,8 +1,7 @@
 #ifndef RENDERHINTS_H
 #define RENDERHINTS_H
 
-#include <QObject>
-#include "QQmlVarPropertyHelpers.h"
+#include <QVector3D>
 
 class RenderHints
 {
@@ -36,6 +35,14 @@ public:
 
     void setInitialAngles(const std::tuple<double, double, double> &angles);
 
+    void setInitialPosition(const QVector3D &initPos);
+    const QVector3D &initialPosition() const;
+
+    void setInitialBasis(const QVector3D &x, const QVector3D &y, const QVector3D &z);
+    const QVector3D &initialXDir() const;
+    const QVector3D &initialYDir() const;
+    const QVector3D &initialZDir() const;
+
 private:
     double m_initialSegmentLength;
     double m_initialSegmentLengthExpansion;
@@ -45,6 +52,10 @@ private:
     double m_initialTurnAngle;
     double m_initialRollAngle;
     double m_initialPitchAngle;
+    QVector3D m_initialPosition;
+    QVector3D m_initialXDir;
+    QVector3D m_initialYDir;
+    QVector3D m_initialZDir;
 };
 
 #endif // RENDERHINTS_H

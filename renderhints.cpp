@@ -9,6 +9,10 @@ RenderHints::RenderHints()
     , m_initialTurnAngle(30)
     , m_initialRollAngle(30)
     , m_initialPitchAngle(30)
+    , m_initialPosition(0,0,0)
+    , m_initialXDir(1,0,0)
+    , m_initialYDir(0,1,0)
+    , m_initialZDir(0,0,1)
 {
 }
 
@@ -87,6 +91,38 @@ void RenderHints::setInitialAngles(const std::tuple<double, double, double> &ang
     m_initialTurnAngle = std::get<0>(angles);
     m_initialRollAngle = std::get<1>(angles);
     m_initialPitchAngle = std::get<2>(angles);
+}
+
+void RenderHints::setInitialPosition(const QVector3D &initPos)
+{
+    m_initialPosition = initPos;
+}
+
+const QVector3D &RenderHints::initialPosition() const
+{
+    return m_initialPosition;
+}
+
+void RenderHints::setInitialBasis(const QVector3D &x, const QVector3D &y, const QVector3D &z)
+{
+    m_initialXDir = x;
+    m_initialYDir = y;
+    m_initialZDir = z;
+}
+
+const QVector3D &RenderHints::initialXDir() const
+{
+    return m_initialXDir;
+}
+
+const QVector3D &RenderHints::initialYDir() const
+{
+    return m_initialYDir;
+}
+
+const QVector3D &RenderHints::initialZDir() const
+{
+    return m_initialZDir;
 }
 
 double RenderHints::initialTurnAngle() const

@@ -386,6 +386,10 @@ void RuleSystemInterpreter::setRenderHints(const RenderHints &rh)
     m_segmentThicknessExpansion = rh.initialSegmentThicknessExpansion();
     m_jointExpansion = rh.initialJointExpansion();
     setAnglesInDegree(rh.initialTurnAngle(), rh.initialRollAngle(), rh.initialPitchAngle());
+    m_pos = rh.initialPosition();
+    m_xdir = rh.initialXDir();
+    m_ydir = rh.initialYDir();
+    m_zdir = rh.initialZDir();
 }
 
 void RuleSystemInterpreter::setrefresh(bool parameter)
