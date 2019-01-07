@@ -19,7 +19,8 @@ SOURCES += \
         main.cpp rule.cpp rulesystem.cpp rulesystempresetfactory.cpp lsystempreset.cpp \
     operationrecognizer.cpp \
     rulesysteminterpreter.cpp \
-    pipe3d.cpp
+    pipe3d.cpp \
+    renderhints.cpp
 
 RESOURCES += qml.qrc
 
@@ -41,5 +42,6 @@ HEADERS += \
     operationrecognizer.h \
     rulesysteminterpreter.h \
     pipe3d.h \
-    pi.h
+    pi.h \
+    renderhints.h
 

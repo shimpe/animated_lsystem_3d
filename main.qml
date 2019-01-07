@@ -61,7 +61,7 @@ Entity {
             tx : LSystem.tx(index)
             ty : LSystem.ty(index)
             tz : LSystem.tz(index)
-            jointExpansion : 1.5
+            jointExpansion : 1.1
             diffuseColor : "white"
             specularColor : "white"
             ambientColor : "red"

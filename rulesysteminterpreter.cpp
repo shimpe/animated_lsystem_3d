@@ -22,9 +22,9 @@ RuleSystemInterpreter::RuleSystemInterpreter(QObject *parent)
     , m_ydir(0,1,0)
     , m_zdir(0,0,1)
     , m_segmentLength(1.0)
-    , m_segmentLengthContraction(1.0)
+    , m_segmentLengthExpansion(1.0)
     , m_segmentThickness(0.1)
-    , m_segmentThicknessContraction(1.0)
+    , m_segmentThicknessExpansion(1.0)
 {}
 
 void RuleSystemInterpreter::updateBasis(const QMatrix3x3 &matrix)
@@ -123,12 +123,12 @@ void RuleSystemInterpreter::recalculate()
         }
         case MULTIPLY_LENGTH:
         {
-            m_segmentLength *= m_segmentLengthContraction;
+            m_segmentLength *= m_segmentLengthExpansion;
             break;
         }
         case MULTIPLY_THICKNESS:
         {
-            m_segmentThickness *= m_segmentThicknessContraction;
+            m_segmentThickness *= m_segmentThicknessExpansion;
             break;
         }
         case START_BRANCH:
@@ -169,165 +169,144 @@ void RuleSystemInterpreter::setCalculatedString(const QString &str)
     {
         m_calculatedString = str;
         m_cacheUpToDate = false;
-        recalculate();
         setrefresh(true);
     }
 }
 
-void RuleSystemInterpreter::setSegmentLength(double len)
+int RuleSystemInterpreter::noOfPipes()
 {
-    if (m_segmentLength != len) {
-        m_segmentLength = len;
-        m_cacheUpToDate = false;
+    if (!m_cacheUpToDate)
         recalculate();
-        setrefresh(true);
-    }
-}
 
-void RuleSystemInterpreter::setSegmentLengthContraction(double lenContraction)
-{
-    if (m_segmentLengthContraction != lenContraction) {
-        m_segmentLengthContraction = lenContraction;
-        m_cacheUpToDate = false;
-        recalculate();
-        setrefresh(true);
-    }
-}
-
-void RuleSystemInterpreter::setSegmentThickness(double thickness)
-{
-    if (m_segmentThickness != thickness)
-    {
-        m_segmentThickness = thickness;
-        m_cacheUpToDate = false;
-        recalculate();
-        setrefresh(true);
-    }
-}
-
-void RuleSystemInterpreter::setSegmentThicknessContraction(double thicknessContraction)
-{
-    if (m_segmentThicknessContraction != thicknessContraction)
-    {
-        m_segmentThicknessContraction = thicknessContraction;
-        m_cacheUpToDate = false;
-        recalculate();
-        setrefresh(true);
-    }
-}
-
-double RuleSystemInterpreter::segmentLength() const
-{
-    return m_segmentLength;
-}
-
-double RuleSystemInterpreter::segmentLengthContraction() const
-{
-    return m_segmentLengthContraction;
-}
-
-double RuleSystemInterpreter::segmentThickness() const
-{
-    return m_segmentThickness;
-}
-
-double RuleSystemInterpreter::segmentThicknessContraction() const
-{
-    return m_segmentThicknessContraction;
-}
-
-int RuleSystemInterpreter::noOfPipes() const
-{
     return m_3dPipes.size();
 }
 
-QVector3D RuleSystemInterpreter::getFrom(int pipeidx) const
+QVector3D RuleSystemInterpreter::getFrom(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->from();
 
     return QVector3D();
 }
 
-QVector3D RuleSystemInterpreter::getTo(int pipeidx) const
+QVector3D RuleSystemInterpreter::getTo(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->to();
 
     return QVector3D();
 }
 
-double RuleSystemInterpreter::w(int pipeidx) const
+double RuleSystemInterpreter::w(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->w();
     return 0;
 }
 
-double RuleSystemInterpreter::h(int pipeidx) const
+double RuleSystemInterpreter::h(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->h();
     return 0;
 }
 
-double RuleSystemInterpreter::d(int pipeidx) const
+double RuleSystemInterpreter::d(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->d();
     return 0;}
 
-double RuleSystemInterpreter::l(int pipeidx) const
+double RuleSystemInterpreter::l(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->l();
     return 0;
 }
 
-double RuleSystemInterpreter::lxz(int pipeidx) const
+double RuleSystemInterpreter::lxz(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->lxz();
     return 0;
 }
 
-double RuleSystemInterpreter::tx(int pipeidx) const
+double RuleSystemInterpreter::tx(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->tx();
     return 0;
 }
 
-double RuleSystemInterpreter::ty(int pipeidx) const
+double RuleSystemInterpreter::ty(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->ty();
     return 0;
 }
 
-double RuleSystemInterpreter::tz(int pipeidx) const
+double RuleSystemInterpreter::tz(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->tz();
     return 0;
 }
 
-double RuleSystemInterpreter::anglex(int pipeidx) const
+double RuleSystemInterpreter::anglex(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->anglex();
     return 0;
 }
 
-double RuleSystemInterpreter::angley(int pipeidx) const
+double RuleSystemInterpreter::angley(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->angley();
     return 0;
 }
 
-double RuleSystemInterpreter::thickness(int pipeidx) const
+double RuleSystemInterpreter::thickness(int pipeidx)
 {
+    if (!m_cacheUpToDate)
+        recalculate();
+
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->thickness();
     return 0;
@@ -378,7 +357,6 @@ void RuleSystemInterpreter::setAnglesInDegree(double turnAngle_deg, double rollA
         m_pitchRightRotationMatrix(1,2) = -m_pitchRightRotationMatrix(2,1);
         m_pitchRightRotationMatrix(2,2) = m_pitchRightRotationMatrix(1,1);
         m_cacheUpToDate = false;
-        recalculate();
         setrefresh(true);
     }
 }
@@ -386,6 +364,15 @@ void RuleSystemInterpreter::setAnglesInDegree(double turnAngle_deg, double rollA
 bool RuleSystemInterpreter::refresh() const
 {
     return true;
+}
+
+void RuleSystemInterpreter::setRenderHints(const RenderHints &rh)
+{
+    m_renderHints = rh;
+    m_segmentLength = rh.initialSegmentLength();
+    m_segmentLengthExpansion = rh.initialSegmentLengthExpansion();
+    m_segmentThickness = rh.initialSegmentThickness();
+    m_segmentThicknessExpansion = rh.initialSegmentThicknessExpansion();
 }
 
 void RuleSystemInterpreter::setrefresh(bool parameter)
