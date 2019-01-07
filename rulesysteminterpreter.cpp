@@ -58,12 +58,12 @@ void RuleSystemInterpreter::recalculate()
             // skip
             break;
         case MOVE_FORWARD_PENUP:
-            m_pos +=(m_xdir*m_segmentLength + m_ydir*m_segmentLength + m_zdir*m_segmentLength);
+            m_pos += m_xdir*m_segmentLength;
             break;
         case MOVE_FORWARD_PENDOWN:
         {
             QVector3D oldPos(m_pos);
-            m_pos += (m_xdir*m_segmentLength + m_ydir*m_segmentLength + m_zdir*m_segmentLength);
+            m_pos += m_xdir*m_segmentLength;
             m_3dPipes.append(new Pipe3D(oldPos, m_pos, m_segmentThickness));
             break;
         }
