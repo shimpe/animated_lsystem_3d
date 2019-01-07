@@ -1,6 +1,10 @@
 #include "pipe3d.h"
 #include <cmath>
 
+#ifndef M_PI
+#include "pi.h"
+#endif
+
 double Pipe3D::w() const
 {
     return to().x() - from().x();

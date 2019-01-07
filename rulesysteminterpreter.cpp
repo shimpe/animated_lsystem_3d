@@ -5,6 +5,10 @@
 #include <QMatrix3x3>
 #include <cmath>
 
+#ifndef M_PI
+#include "pi.h"
+#endif
+
 RuleSystemInterpreter::RuleSystemInterpreter(QObject *parent)
     : QObject(parent)
     , m_cacheUpToDate(false)

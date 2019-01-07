@@ -40,5 +40,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     operationrecognizer.h \
     rulesysteminterpreter.h \
-    pipe3d.h
+    pipe3d.h \
+    pi.h
 
