@@ -5,6 +5,10 @@ RenderHints::RenderHints()
     , m_initialSegmentLengthExpansion(1.0)
     , m_initialSegmentThickness(0.1)
     , m_initialSegmentThicknessExpansion(1.0)
+    , m_initialJointExpansion(1.0)
+    , m_initialTurnAngle(30)
+    , m_initialRollAngle(30)
+    , m_initialPitchAngle(30)
 {
 }
 
@@ -46,4 +50,51 @@ double RenderHints::initialSegmentThicknessExpansion() const
 void RenderHints::setInitialSegmentThicknessExpansion(double segmentThicknessExpansion)
 {
     m_initialSegmentThicknessExpansion = segmentThicknessExpansion;
+}
+
+double RenderHints::initialJointExpansion() const
+{
+    return m_initialJointExpansion;
+}
+
+void RenderHints::setInitialJointExpansion(double initialJointExpansion)
+{
+    m_initialJointExpansion = initialJointExpansion;
+}
+
+double RenderHints::initialRollAngle() const
+{
+    return m_initialRollAngle;
+}
+
+void RenderHints::setInitialRollAngle(double initialRollAngle)
+{
+    m_initialRollAngle = initialRollAngle;
+}
+
+double RenderHints::initialPitchAngle() const
+{
+    return m_initialPitchAngle;
+}
+
+void RenderHints::setInitialPitchAngle(double initialPitchAngle)
+{
+    m_initialPitchAngle = initialPitchAngle;
+}
+
+void RenderHints::setInitialAngles(const std::tuple<double, double, double> &angles)
+{
+    m_initialTurnAngle = std::get<0>(angles);
+    m_initialRollAngle = std::get<1>(angles);
+    m_initialPitchAngle = std::get<2>(angles);
+}
+
+double RenderHints::initialTurnAngle() const
+{
+    return m_initialTurnAngle;
+}
+
+void RenderHints::setInitialTurnAngle(double initialTurnAngle)
+{
+    m_initialTurnAngle = initialTurnAngle;
 }

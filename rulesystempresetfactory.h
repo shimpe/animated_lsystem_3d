@@ -2,6 +2,7 @@
 #define RULESYSTEMPRESET_H
 
 #include "lsystempreset.h"
+#include <tuple>
 
 enum RSP {
     FIRST_SYSTEM,
@@ -11,8 +12,8 @@ class RuleSystemPresetFactory
 {
 public:
     RuleSystemPresetFactory();
-    LSystemPreset CreateRuleSystemPreset(RSP type, int NoOfIterations=-1); // -1 uses a default value
-    double getRecommendedAngle(RSP type) const;
+    LSystemPreset createRuleSystemPreset(RSP type, int NoOfIterations=-1); // -1 uses a default value
+    std::tuple<double, double, double> getRecommendedAngles(RSP type) const;
 };
 
 #endif // RULESYSTEMPRESET_H

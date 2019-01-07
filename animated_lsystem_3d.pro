@@ -43,5 +43,6 @@ HEADERS += \
     rulesysteminterpreter.h \
     pipe3d.h \
     pi.h \
-    renderhints.h
+    renderhints.h \
+    rulesystempresetfactory.h
 

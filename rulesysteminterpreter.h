@@ -32,6 +32,7 @@ public:
     Q_INVOKABLE double anglex(int pipeidx);
     Q_INVOKABLE double angley(int pipeidx);
     Q_INVOKABLE double thickness(int pipeidx);
+    Q_INVOKABLE double jointExpansion(int pipeidx);
 
     Q_INVOKABLE void setAnglesInDegree(double turnangle_degree, double rollangle_degree, double pitchangle_degree);
 
@@ -83,6 +84,7 @@ private:
     double m_segmentLengthExpansion;
     double m_segmentThickness;
     double m_segmentThicknessExpansion;
+    double m_jointExpansion;
 
     QStack<double> m_stackTurnAngle;
     QStack<double> m_stackRollAngle;

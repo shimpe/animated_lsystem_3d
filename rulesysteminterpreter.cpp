@@ -25,6 +25,7 @@ RuleSystemInterpreter::RuleSystemInterpreter(QObject *parent)
     , m_segmentLengthExpansion(1.0)
     , m_segmentThickness(0.1)
     , m_segmentThicknessExpansion(1.0)
+    , m_jointExpansion(1.0)
 {}
 
 void RuleSystemInterpreter::updateBasis(const QMatrix3x3 &matrix)
@@ -70,7 +71,7 @@ void RuleSystemInterpreter::recalculate()
         {
             QVector3D oldPos(m_pos);
             m_pos += m_xdir*m_segmentLength;
-            m_3dPipes.append(new Pipe3D(oldPos, m_pos, m_segmentThickness));
+            m_3dPipes.append(new Pipe3D(oldPos, m_pos, m_segmentThickness, m_jointExpansion));
             break;
         }
         case TURN_LEFT:
@@ -312,6 +313,16 @@ double RuleSystemInterpreter::thickness(int pipeidx)
     return 0;
 }
 
+double RuleSystemInterpreter::jointExpansion(int pipeidx)
+{
+    if (!m_cacheUpToDate)
+        recalculate();
+
+    if (pipeidx < m_3dPipes.size())
+        return m_3dPipes.at(pipeidx)->jointExpansion();
+    return 0;
+}
+
 void RuleSystemInterpreter::setAnglesInDegree(double turnAngle_deg, double rollAngle_deg, double pitchAngle_deg)
 {
     if (turnAngle_deg != m_turnAngleInDegree ||
@@ -373,6 +384,8 @@ void RuleSystemInterpreter::setRenderHints(const RenderHints &rh)
     m_segmentLengthExpansion = rh.initialSegmentLengthExpansion();
     m_segmentThickness = rh.initialSegmentThickness();
     m_segmentThicknessExpansion = rh.initialSegmentThicknessExpansion();
+    m_jointExpansion = rh.initialJointExpansion();
+    setAnglesInDegree(rh.initialTurnAngle(), rh.initialRollAngle(), rh.initialPitchAngle());
 }
 
 void RuleSystemInterpreter::setrefresh(bool parameter)

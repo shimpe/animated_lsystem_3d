@@ -76,3 +76,8 @@ const QVector3D &Pipe3D::to() const
 {
     return m_to;
 }
+
+double Pipe3D::jointExpansion() const
+{
+    return m_jointExpansion;
+}

@@ -12,13 +12,15 @@ public:
     explicit Pipe3D(QObject *parent = nullptr)
         : QObject(parent)
         , m_thickness(0.1)
+        , m_jointExpansion(1.0)
     {
     }
-    explicit Pipe3D(const QVector3D &from, const QVector3D &to, double thickness, QObject *parent = nullptr)
+    explicit Pipe3D(const QVector3D &from, const QVector3D &to, double thickness, double jointExpansion, QObject *parent = nullptr)
         : QObject (parent)
         , m_from(from)
         , m_to(to)
         , m_thickness(thickness)
+        , m_jointExpansion(jointExpansion)
     {
     }
     double w() const;
@@ -34,6 +36,7 @@ public:
     double thickness() const;
     const QVector3D &from() const;
     const QVector3D &to() const;
+    double jointExpansion() const;
 
 signals:
 
@@ -43,6 +46,7 @@ private:
     QVector3D m_from;
     QVector3D m_to;
     double m_thickness;
+    double m_jointExpansion;
 };
 
 #endif // ROD_H
