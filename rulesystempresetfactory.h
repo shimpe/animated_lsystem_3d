@@ -5,7 +5,7 @@
 #include <tuple>
 
 enum RSP {
-    FIRST_SYSTEM,
+    FLAT_SYSTEM,
 };
 
 class RuleSystemPresetFactory

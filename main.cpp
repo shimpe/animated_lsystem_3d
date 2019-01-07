@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     RuleSystemPresetFactory f;
-    LSystemPreset preset = f.createRuleSystemPreset(FIRST_SYSTEM);
+    LSystemPreset preset = f.createRuleSystemPreset(FLAT_SYSTEM);
 
     RuleSystemInterpreter ruleSystemInterpreter;
     ruleSystemInterpreter.setCalculatedString(preset.ruleSystem().calculatedString());

@@ -15,7 +15,7 @@ LSystemPreset RuleSystemPresetFactory::createRuleSystemPreset(RSP type, int NoOf
     RenderHints rh;
     switch (type)
     {
-        case FIRST_SYSTEM:
+        case FLAT_SYSTEM:
         {
             rs.setAxiom("FX");
             rs.addRule(Rule("X","X+YF+"));
@@ -40,7 +40,7 @@ std::tuple<double, double, double> RuleSystemPresetFactory::getRecommendedAngles
 {
     switch(type)
     {
-        case FIRST_SYSTEM:
+        case FLAT_SYSTEM:
             return std::make_tuple(72.0, 72.0, 72.0);
     }
     return std::make_tuple(0.0, 0.0, 0.0);
