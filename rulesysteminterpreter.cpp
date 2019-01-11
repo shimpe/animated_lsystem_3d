@@ -26,6 +26,8 @@ RuleSystemInterpreter::RuleSystemInterpreter(QObject *parent)
     , m_segmentThickness(0.1)
     , m_segmentThicknessExpansion(1.0)
     , m_jointExpansion(1.0)
+    , m_interpreterState(EXPECTING_COMMAND)
+    , m_currentAmbientColor("gold")
 {}
 
 void RuleSystemInterpreter::updateBasis(const QMatrix3x3 &matrix)
@@ -60,105 +62,117 @@ void RuleSystemInterpreter::recalculate()
     OperationRecognizer r;
     for (auto &c : m_calculatedString) {
         Operations o = r.recognize(c);
-        switch(o) {
-        case CONSTANT:
-            // skip
-            break;
-        case MOVE_FORWARD_PENUP:
-            m_pos += m_xdir*m_segmentLength;
-            break;
-        case MOVE_FORWARD_PENDOWN:
+        if (m_interpreterState == EXPECTING_COMMAND)
         {
-            QVector3D oldPos(m_pos);
-            m_pos += m_xdir*m_segmentLength;
-            m_3dPipes.append(new Pipe3D(oldPos, m_pos, m_segmentThickness, m_jointExpansion));
-            break;
-        }
-        case TURN_LEFT:
-        {
-            updateBasis(m_turnLeftRotationMatrix);
-            break;
-        }
-        case TURN_RIGHT:
-        {
-            updateBasis(m_turnRightRotationMatrix);
-            break;
-        }
-        case ROLL_LEFT:
-        {
-            updateBasis(m_rollLeftRotationMatrix);
-            break;
-        }
-        case ROLL_RIGHT:
-        {
-            updateBasis(m_rollRightRotationMatrix);
-            break;
-        }
-        case PITCH_UP:
-        {
-            updateBasis(m_pitchLeftRotationMatrix);
-            break;
-        }
-        case PITCH_DOWN:
-        {
-            updateBasis(m_pitchRightRotationMatrix);
-            break;
-        }
-        case REVERSE:
-        {
-            m_xdir.setX(-m_xdir.x());
-            m_xdir.setY(-m_xdir.y());
-            m_xdir.setZ(-m_xdir.z());
-            m_ydir.setX(-m_ydir.x());
-            m_ydir.setY(-m_ydir.y());
-            m_ydir.setZ(-m_ydir.z());
-            m_zdir.setX(-m_zdir.x());
-            m_zdir.setY(-m_zdir.y());
-            m_zdir.setZ(-m_zdir.z());
-            break;
-        }
-        case INSERT_POINT:
-        {
-            // ??
-            break;
-        }
-        case MULTIPLY_LENGTH:
-        {
-            m_segmentLength *= m_segmentLengthExpansion;
-            break;
-        }
-        case MULTIPLY_THICKNESS:
-        {
-            m_segmentThickness *= m_segmentThicknessExpansion;
-            break;
-        }
-        case START_BRANCH:
-        {
-            m_stackTurnAngle.push(m_turnAngleInDegree);
-            m_stackRollAngle.push(m_rollAngleInDegree);
-            m_stackPitchAngle.push(m_pitchAngleInDegree);
-            m_stackSegmentLength.push(m_segmentLength);
-            m_stackSegmentThickness.push(m_segmentThickness);
-            m_stackxdir.push(m_xdir);
-            m_stackydir.push(m_ydir);
-            m_stackzdir.push(m_zdir);
-            m_stackPos.push(m_pos);
-            break;
-        }
-        case END_BRANCH:
-        {
-            if (!m_stackTurnAngle.empty())
+            switch(o) {
+            case CONSTANT:
+                // skip
+                break;
+            case MOVE_FORWARD_PENUP:
+                m_pos += m_xdir*m_segmentLength;
+                break;
+            case MOVE_FORWARD_PENDOWN:
             {
-                setAnglesInDegree(m_stackTurnAngle.pop(), m_stackRollAngle.pop(), m_stackPitchAngle.pop());
-                m_segmentLength = m_stackSegmentLength.pop();
-                m_segmentThickness = m_stackSegmentThickness.pop();
-                m_xdir = m_stackxdir.pop();
-                m_ydir = m_stackydir.pop();
-                m_zdir = m_stackzdir.pop();
-                m_pos = m_stackPos.pop();
+                QVector3D oldPos(m_pos);
+                m_pos += m_xdir*m_segmentLength;
+                m_3dPipes.append(new Pipe3D(oldPos, m_pos, m_segmentThickness, m_jointExpansion, "white", "white", m_currentAmbientColor));
+                break;
             }
-            break;
+            case TURN_LEFT:
+            {
+                updateBasis(m_turnLeftRotationMatrix);
+                break;
+            }
+            case TURN_RIGHT:
+            {
+                updateBasis(m_turnRightRotationMatrix);
+                break;
+            }
+            case ROLL_LEFT:
+            {
+                updateBasis(m_rollLeftRotationMatrix);
+                break;
+            }
+            case ROLL_RIGHT:
+            {
+                updateBasis(m_rollRightRotationMatrix);
+                break;
+            }
+            case PITCH_UP:
+            {
+                updateBasis(m_pitchLeftRotationMatrix);
+                break;
+            }
+            case PITCH_DOWN:
+            {
+                updateBasis(m_pitchRightRotationMatrix);
+                break;
+            }
+            case REVERSE:
+            {
+                m_xdir.setX(-m_xdir.x());
+                m_xdir.setY(-m_xdir.y());
+                m_xdir.setZ(-m_xdir.z());
+                m_ydir.setX(-m_ydir.x());
+                m_ydir.setY(-m_ydir.y());
+                m_ydir.setZ(-m_ydir.z());
+                m_zdir.setX(-m_zdir.x());
+                m_zdir.setY(-m_zdir.y());
+                m_zdir.setZ(-m_zdir.z());
+                break;
+            }
+            case INSERT_POINT:
+            {
+                // ??
+                break;
+            }
+            case MULTIPLY_LENGTH:
+            {
+                m_segmentLength *= m_segmentLengthExpansion;
+                break;
+            }
+            case MULTIPLY_THICKNESS:
+            {
+                m_segmentThickness *= m_segmentThicknessExpansion;
+                break;
+            }
+            case START_BRANCH:
+            {
+                m_stackTurnAngle.push(m_turnAngleInDegree);
+                m_stackRollAngle.push(m_rollAngleInDegree);
+                m_stackPitchAngle.push(m_pitchAngleInDegree);
+                m_stackSegmentLength.push(m_segmentLength);
+                m_stackSegmentThickness.push(m_segmentThickness);
+                m_stackxdir.push(m_xdir);
+                m_stackydir.push(m_ydir);
+                m_stackzdir.push(m_zdir);
+                m_stackPos.push(m_pos);
+                break;
+            }
+            case END_BRANCH:
+            {
+                if (!m_stackTurnAngle.empty())
+                {
+                    setAnglesInDegree(m_stackTurnAngle.pop(), m_stackRollAngle.pop(), m_stackPitchAngle.pop());
+                    m_segmentLength = m_stackSegmentLength.pop();
+                    m_segmentThickness = m_stackSegmentThickness.pop();
+                    m_xdir = m_stackxdir.pop();
+                    m_ydir = m_stackydir.pop();
+                    m_zdir = m_stackzdir.pop();
+                    m_pos = m_stackPos.pop();
+                }
+                break;
+            }
+            case COLOR_CHANGE:
+            {
+                m_interpreterState = EXPECTING_NUMBER;
+            }
+            }
         }
+        else if (m_interpreterState == EXPECTING_NUMBER)
+        {
+            m_currentAmbientColor = m_renderHints.getColor(c);
+            m_interpreterState = EXPECTING_COMMAND;
         }
     }
     m_cacheUpToDate = true;
@@ -321,6 +335,39 @@ double RuleSystemInterpreter::jointExpansion(int pipeidx)
     if (pipeidx < m_3dPipes.size())
         return m_3dPipes.at(pipeidx)->jointExpansion();
     return 0;
+}
+
+QColor RuleSystemInterpreter::diffuseColor(int pipeidx)
+{
+    if (!m_cacheUpToDate)
+        recalculate();
+
+    if (pipeidx < m_3dPipes.size())
+        return m_3dPipes.at(pipeidx)->diffuseColor();
+
+    return "white";
+}
+
+QColor RuleSystemInterpreter::specularColor(int pipeidx)
+{
+    if (!m_cacheUpToDate)
+        recalculate();
+
+    if (pipeidx < m_3dPipes.size())
+        return m_3dPipes.at(pipeidx)->specularColor();
+
+    return "white";
+}
+
+QColor RuleSystemInterpreter::ambientColor(int pipeidx)
+{
+    if (!m_cacheUpToDate)
+        recalculate();
+
+    if (pipeidx < m_3dPipes.size())
+        return m_3dPipes.at(pipeidx)->ambientColor();
+
+    return "red";
 }
 
 void RuleSystemInterpreter::setAnglesInDegree(double turnAngle_deg, double rollAngle_deg, double pitchAngle_deg)

@@ -32,6 +32,8 @@ Operations OperationRecognizer::recognize(const QChar &ch)
         return START_BRANCH;
     case ']':
         return END_BRANCH;
+    case 'C':
+        return COLOR_CHANGE;
     default:
         if (isPenUp(ch))
         {

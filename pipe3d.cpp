@@ -81,3 +81,18 @@ double Pipe3D::jointExpansion() const
 {
     return m_jointExpansion;
 }
+
+const QColor &Pipe3D::diffuseColor() const
+{
+    return m_diffuseColor;
+}
+
+const QColor &Pipe3D::specularColor() const
+{
+    return m_specularColor;
+}
+
+const QColor &Pipe3D::ambientColor() const
+{
+    return m_ambientColor;
+}

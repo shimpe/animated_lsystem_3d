@@ -125,6 +125,18 @@ const QVector3D &RenderHints::initialZDir() const
     return m_initialZDir;
 }
 
+void RenderHints::setColorTable(const QMap<QChar, QColor> &colorTable)
+{
+    m_colorTable = colorTable;
+}
+
+QColor RenderHints::getColor(const QChar &c) const
+{
+    if (m_colorTable.contains(c))
+        return m_colorTable[c];
+    return "red";
+}
+
 double RenderHints::initialTurnAngle() const
 {
     return m_initialTurnAngle;

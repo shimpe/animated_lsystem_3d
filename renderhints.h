@@ -2,6 +2,9 @@
 #define RENDERHINTS_H
 
 #include <QVector3D>
+#include <QMap>
+#include <QChar>
+#include <QColor>
 
 class RenderHints
 {
@@ -43,6 +46,9 @@ public:
     const QVector3D &initialYDir() const;
     const QVector3D &initialZDir() const;
 
+    void setColorTable(const QMap<QChar, QColor> &colorTable);
+    QColor getColor(const QChar &c) const;
+
 private:
     double m_initialSegmentLength;
     double m_initialSegmentLengthExpansion;
@@ -56,6 +62,7 @@ private:
     QVector3D m_initialXDir;
     QVector3D m_initialYDir;
     QVector3D m_initialZDir;
+    QMap<QChar, QColor> m_colorTable;
 };
 
 #endif // RENDERHINTS_H

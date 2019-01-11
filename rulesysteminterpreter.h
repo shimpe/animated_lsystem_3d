@@ -10,6 +10,8 @@
 #include "pipe3d.h"
 #include "renderhints.h"
 
+enum tp_interpreter_state { EXPECTING_COMMAND, EXPECTING_NUMBER };
+
 class RuleSystemInterpreter : public QObject
 {
     Q_OBJECT
@@ -33,6 +35,9 @@ public:
     Q_INVOKABLE double angley(int pipeidx);
     Q_INVOKABLE double thickness(int pipeidx);
     Q_INVOKABLE double jointExpansion(int pipeidx);
+    Q_INVOKABLE QColor diffuseColor(int pipeidx);
+    Q_INVOKABLE QColor specularColor(int pipeidx);
+    Q_INVOKABLE QColor ambientColor(int pipeidx);
 
     Q_INVOKABLE void setAnglesInDegree(double turnangle_degree, double rollangle_degree, double pitchangle_degree);
 
@@ -97,6 +102,9 @@ private:
     QStack<QVector3D> m_stackPos;
 
     RenderHints m_renderHints;
+
+    tp_interpreter_state m_interpreterState;
+    QColor m_currentAmbientColor;
 
     void updateBasis(const QMatrix3x3 &matrix);
 

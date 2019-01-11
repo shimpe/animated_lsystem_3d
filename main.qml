@@ -62,9 +62,9 @@ Entity {
             ty : LSystem.ty(index)
             tz : LSystem.tz(index)
             jointExpansion : LSystem.jointExpansion(index)
-            diffuseColor : "white"
-            specularColor : "white"
-            ambientColor : "red"
+            diffuseColor : LSystem.diffuseColor(index)
+            specularColor : LSystem.specularColor(index)
+            ambientColor : LSystem.ambientColor(index)
         }
     }
 

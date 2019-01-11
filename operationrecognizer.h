@@ -20,6 +20,7 @@ enum Operations {
     MULTIPLY_THICKNESS,   // ! multiply current thickness by dT(Thickness Scale)
     START_BRANCH,         // [ start a branch(push turtle state)
     END_BRANCH,           // ] end a branch(pop turtle state)
+    COLOR_CHANGE,         // Cx changes color to color x (x = hex digit 0..F)
 };
 
 class OperationRecognizer

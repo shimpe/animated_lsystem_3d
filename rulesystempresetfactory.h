@@ -6,6 +6,7 @@
 
 enum RSP {
     FLAT_SYSTEM,
+    SPHERICAL
 };
 
 class RuleSystemPresetFactory
