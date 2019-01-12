@@ -38,21 +38,45 @@ LSystemPreset RuleSystemPresetFactory::createRuleSystemPreset(RSP type, int NoOf
     case SPHERICAL:
     {
         rs.setAxiom("C0X+C1X+C2X+C3X+C4X");
-        rs.addRule(Rule("X","[X-X-X-X]^"));
-        rs.setNoOfIterations(NoOfIterations == -1 ? 3 : NoOfIterations);
+        rs.addRule(Rule("X","[X-X-Y-X-X]-^"));
+        rs.addRule(Rule("Y","Z-Z-Z^Z-Z-Z^X-Z-Z^Z-Z-Z^Z-Z-Z"));
+        rs.setNoOfIterations(NoOfIterations == -1 ? 5 : NoOfIterations);
 
-        rh.setInitialSegmentLength(1.0);
+        rh.setInitialSegmentLength(10);
         rh.setInitialSegmentThickness(0.1);
         rh.setInitialSegmentLengthExpansion(0.3);
         rh.setInitialSegmentThicknessExpansion(0.3);
-        rh.setInitialJointExpansion(1.0);
+        rh.setInitialJointExpansion(1.2);
+        rh.setInitialAngles(getRecommendedAngles(type));
+
+        QMap<QChar, QColor> customColorTable;
+        customColorTable['0'] = "brown";
+        customColorTable['1'] = "yellow";
+        customColorTable['2'] = "green";
+        customColorTable['3'] = "blue";
+        customColorTable['4'] = "black";
+        rh.setColorTable(customColorTable);
+    }
+
+    case FERNEY_LIKE:
+    {
+        rs.setAxiom("BBBBBA");
+        rs.addRule(Rule("A","[++BB[--D][C0++D][__D][C3^^D]A]/////+BBB[--D][C2++D][__D][^^D]A"));
+        rs.addRule(Rule("B", "\\\\B"));
+        rs.setNoOfIterations(NoOfIterations == -1 ? 5 : NoOfIterations);
+
+        rh.setInitialSegmentLength(1);
+        rh.setInitialSegmentThickness(0.1);
+        rh.setInitialSegmentLengthExpansion(0.7);
+        rh.setInitialSegmentThicknessExpansion(0.7);
+        rh.setInitialJointExpansion(1.2);
         rh.setInitialAngles(getRecommendedAngles(type));
         QMap<QChar, QColor> customColorTable;
         customColorTable['0'] = "brown";
         customColorTable['1'] = "yellow";
         customColorTable['2'] = "green";
-        customColorTable['2'] = "blue";
-        customColorTable['2'] = "black";
+        customColorTable['3'] = "blue";
+        customColorTable['4'] = "black";
         rh.setColorTable(customColorTable);
     }
 
@@ -67,7 +91,9 @@ std::tuple<double, double, double> RuleSystemPresetFactory::getRecommendedAngles
     case FLAT_SYSTEM:
         return std::make_tuple(72.0, 72.0, 72.0);
     case SPHERICAL:
-        return std::make_tuple(80.0, 80.0, 80.0);
+        return std::make_tuple(72.0, 72.0, 72.0);
+    case FERNEY_LIKE:
+        return std::make_tuple(9.0, 10.0, 11.0);
     }
     return std::make_tuple(0.0, 0.0, 0.0);
 }
