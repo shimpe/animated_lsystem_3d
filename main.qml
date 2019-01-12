@@ -11,6 +11,7 @@ Entity {
 
     property real orbitSpeed : 5.0
     property real lookSpeed: 5.0
+    property int viewAll: 1
 
     Camera {
         id: camera
@@ -31,6 +32,11 @@ Entity {
 
     FrameAction {
         onTriggered: {
+            if (viewAll == 1)
+            {
+                camera.viewAll();
+                viewAll = 0;
+            }
             camera.panAboutViewCenter(sceneRoot.lookSpeed * dt)
             camera.tiltAboutViewCenter(sceneRoot.orbitSpeed * dt)
         }
@@ -66,9 +72,5 @@ Entity {
             specularColor : LSystem.specularColor(index)
             ambientColor : LSystem.ambientColor(index)
         }
-    }
-
-    Component.onCompleted: {
-        camera.viewAll();
     }
 }
